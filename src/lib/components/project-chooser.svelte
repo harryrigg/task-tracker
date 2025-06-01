@@ -9,6 +9,7 @@
 
   import { projects } from "$lib/state/projects.svelte";
   import type { Project } from "$lib/types";
+  import { cn } from "$lib/utils";
 
   type Props = {
     value: Project | null;
@@ -65,12 +66,15 @@
           {#each projects.projects as project}
             <Command.Item
               onSelect={() => select(project)}
-              class="flex items-center justify-between"
+              class={cn(
+                "flex items-center justify-between",
+                value?.id === project.id && "dark:bg-primary",
+              )}
             >
               <span>
                 {project.name}
               </span>
-              <span class="text-muted-foreground">
+              <span class="text-foreground/70">
                 {project.description}
               </span>
             </Command.Item>
