@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "ttracker_rs",
+  "productName": "Task Tracker",
   "version": "0.1.0",
-  "identifier": "com.ttracker.app",
+  "identifier": "com.task-tracker.app",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "ttracker_rs",
+        "title": "Task Tracker",
         "width": 800,
         "height": 600
       }
@@ -22,6 +22,9 @@
     }
   },
   "bundle": {
+    "macOS": {
+      "minimumSystemVersion": "14.6"
+    },
     "active": true,
     "targets": "all",
     "icon": [
