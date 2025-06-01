@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { ChevronsUpDownIcon, PlusIcon } from "@lucide/svelte";
-  import { tick } from "svelte";
+  import { PlusIcon } from "@lucide/svelte";
+  import { type Snippet, tick } from "svelte";
 
   import CreateProjectDialog from "$lib/components/create-project-dialog.svelte";
   import { Button } from "$lib/components/ui/button";
@@ -9,15 +9,18 @@
 
   import { projects } from "$lib/state/projects.svelte";
   import type { Project } from "$lib/types";
-  import { cn } from "$lib/utils";
 
   type Props = {
     value: Project | null;
     allowCreate: boolean;
-    triggerClass?: string;
+    child: Snippet<[{ props: Record<string, unknown> }]>;
   };
 
-  let { value = $bindable(), allowCreate, triggerClass }: Props = $props();
+  let {
+    value = $bindable(),
+    allowCreate,
+    child: triggerChild,
+  }: Props = $props();
 
   let open = $state(false);
   let triggerRef = $state<HTMLButtonElement>(null!);
@@ -47,22 +50,10 @@
 <Popover.Root bind:open>
   <Popover.Trigger bind:ref={triggerRef}>
     {#snippet child({ props })}
-      <Button
-        variant="outline"
-        {...props}
-        class={cn(
-          "w-[280px] justify-between border-input bg-input",
-          triggerClass,
-        )}
-        role="combobox"
-        aria-expanded={open}
-      >
-        {value?.name || "Select a project..."}
-        <ChevronsUpDownIcon class="ml-2 size-4 shrink-0 opacity-50" />
-      </Button>
+      {@render triggerChild({ props })}
     {/snippet}
   </Popover.Trigger>
-  <Popover.Content class="w-[280px] p-0">
+  <Popover.Content class="w-[280px] p-0" align="start">
     <Command.Root class="">
       <Command.Input placeholder="Search project..." />
       <Command.List class="flex flex-col overflow-x-hidden overflow-y-hidden">

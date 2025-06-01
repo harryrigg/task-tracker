@@ -25,14 +25,16 @@ pub struct Task {
     pub id: i32,
     pub started_at: NaiveDateTime,
     pub finished_at: Option<NaiveDateTime>,
+    pub description: String,
     pub project_id: i32,
 }
 
 #[derive(Debug, Insertable)]
 #[diesel(table_name = crate::schema::tasks)]
-pub struct NewTask {
+pub struct NewTask<'a> {
     pub started_at: NaiveDateTime,
     pub finished_at: Option<NaiveDateTime>,
+    pub description: &'a str,
     pub project_id: i32,
 }
 

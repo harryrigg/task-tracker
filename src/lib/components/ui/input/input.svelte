@@ -51,7 +51,7 @@
       "flex h-9 w-full min-w-0 items-center rounded-md border border-input bg-background px-3 py-1 text-base shadow-xs ring-offset-background transition-[color,box-shadow] has-disabled:cursor-not-allowed has-disabled:opacity-50 md:text-sm dark:bg-input/30",
       "focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50",
       "has-aria-invalid:border-destructive has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40",
-      "[&_svg]:mr-2.5 [&_svg]:size-4",
+      "[&_svg]:mr-2.5 [&_svg]:size-4 [&_svg]:shrink-0",
       className,
     )}
   >

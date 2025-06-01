@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
 
   import { Button } from "$lib/components/ui/button";
+  import { TooltipSimple } from "$lib/components/ui/tooltip";
 
   import { tasks } from "$lib/state/tasks.svelte";
   import type { Task } from "$lib/types";
@@ -38,10 +39,16 @@
 
 <div class="flex h-full items-center justify-between">
   <div class="flex flex-col">
-    <span class="text-lg/6">{currentTask.project.name}</span>
-    <span class="text-sm text-muted-foreground/90"
-      >{currentTask.project.description}</span
-    >
+    <TooltipSimple tooltip={currentTask.project.description} class="text-lg/6">
+      {currentTask.project.name}
+    </TooltipSimple>
+    <span class="text-sm text-muted-foreground/90">
+      {#if currentTask.description === ""}
+        <i>No task description...</i>
+      {:else}
+        {currentTask.description}
+      {/if}
+    </span>
   </div>
   <div class="flex items-center gap-3">
     {@render detail("Started At", formatTime(currentTask.startedAt))}

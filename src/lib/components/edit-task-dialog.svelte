@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ChevronsUpDownIcon } from "@lucide/svelte";
   import { useId } from "bits-ui";
   import toast from "svelte-french-toast";
   import { superForm } from "sveltekit-superforms";
@@ -8,6 +9,7 @@
   import { Button } from "$lib/components/ui/button";
   import * as Dialog from "$lib/components/ui/dialog";
   import * as Form from "$lib/components/ui/form";
+  import { Input } from "$lib/components/ui/input";
   import { TimeInput } from "$lib/components/ui/time-input";
 
   import { type TaskSchema, taskSchema } from "$lib/schema";
@@ -23,6 +25,7 @@
   let { task, onClose }: Props = $props();
 
   const initialData = {
+    description: task.description,
     startedAt: task.startedAt.toPlainTime(),
     finishedAt: task.finishedAt!.toPlainTime(),
     projectId: task.project.id,
@@ -38,7 +41,13 @@
       const startedAt = task.startedAt.withPlainTime(form.data.startedAt);
       const finishedAt = task.finishedAt!.withPlainTime(form.data.finishedAt);
 
-      await tasks.update(task.id, form.data.projectId, startedAt, finishedAt);
+      await tasks.update(
+        task.id,
+        form.data.projectId,
+        form.data.description,
+        startedAt,
+        finishedAt,
+      );
       toast.success("Updated task");
       onClose?.();
     },
@@ -74,6 +83,20 @@
     </Dialog.Header>
     <form use:enhance id={formId}>
       <Form.Container>
+        <Form.Field {form} name="description">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Description</Form.Label>
+              <Input
+                {...props}
+                bind:value={$formData.description}
+                class="w-[280px]"
+              />
+            {/snippet}
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+
         <Form.Field {form} name="startedAt">
           <Form.Control>
             {#snippet children({ props })}
@@ -114,7 +137,20 @@
                   }
                 }
                 allowCreate={false}
-              />
+              >
+                {#snippet child({ props })}
+                  <Button
+                    variant="outline"
+                    {...props}
+                    class="w-[280px] justify-between border-input bg-input"
+                  >
+                    {project?.name || "Select a project..."}
+                    <ChevronsUpDownIcon
+                      class="ml-2 size-4 shrink-0 opacity-50"
+                    />
+                  </Button>
+                {/snippet}
+              </ProjectChooser>
             {/snippet}
           </Form.Control>
           <Form.FieldErrors />

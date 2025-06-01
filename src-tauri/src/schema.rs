@@ -13,6 +13,7 @@ diesel::table! {
         id -> Integer,
         started_at -> Timestamp,
         finished_at -> Nullable<Timestamp>,
+        description -> Text,
         project_id -> Integer,
     }
 }

@@ -31,7 +31,7 @@
     "@tanstack/table-core": "^8.21.3",
     "@tauri-apps/cli": "^2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "bits-ui": "^2.3.0",
+    "bits-ui": "^2.4.1",
     "clsx": "^2.1.1",
     "formsnap": "^2.0.1",
     "prettier": "^3.5.3",

@@ -48,8 +48,8 @@ class TasksState {
     }).then((v) => v.map(transformTask));
   }
 
-  async start(projectId: number) {
-    await invoke("start_task", { projectId });
+  async start(projectId: number, description: string) {
+    await invoke("start_task", { projectId, description });
     await this.reload();
   }
 
@@ -61,6 +61,7 @@ class TasksState {
   async update(
     id: number,
     projectId: number,
+    description: string,
     startedAt: Temporal.ZonedDateTime,
     finishedAt: Temporal.ZonedDateTime | null,
   ) {
@@ -70,6 +71,7 @@ class TasksState {
     await invoke("update_task", {
       id,
       projectId,
+      description,
       startedAt: startedAtUtc,
       finishedAt: finishedAtUtc,
     });

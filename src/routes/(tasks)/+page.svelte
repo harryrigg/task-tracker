@@ -15,6 +15,7 @@
   import { Card } from "$lib/components/ui/card";
   import { DataTable, renderSnippet } from "$lib/components/ui/data-table";
   import * as Popover from "$lib/components/ui/popover";
+  import { TooltipSimple } from "$lib/components/ui/tooltip";
 
   import { tasks } from "$lib/state/tasks.svelte";
   import { type Task } from "$lib/types";
@@ -27,12 +28,16 @@
   const columns = [
     columnHelper.accessor("project.name", {
       header: "Project",
+      cell: ({ row }) => renderSnippet(projectColumn, { task: row.original }),
     }),
-    columnHelper.accessor("project.description", {
+    columnHelper.accessor("description", {
       header: "Description",
       meta: {
-        class: "w-full text-muted-foreground",
+        class:
+          "w-full max-w-0 text-muted-foreground text-ellipsis overflow-hidden",
       },
+      cell: ({ row }) =>
+        renderSnippet(descriptionColumn, { task: row.original }),
     }),
     columnHelper.accessor("startedAt", {
       header: "Started",
@@ -66,6 +71,20 @@
 
   let editingTask = $state<Task | null>(null);
 </script>
+
+{#snippet projectColumn({ task }: { task: Task })}
+  <TooltipSimple tooltip={task.project.description}>
+    {task.project.name}
+  </TooltipSimple>
+{/snippet}
+
+{#snippet descriptionColumn({ task }: { task: Task })}
+  {#if task.description === ""}
+    <span class="text-muted-foreground/40 italic">N/A</span>
+  {:else}
+    {task.description}
+  {/if}
+{/snippet}
 
 {#snippet tableControls({ task }: { task: Task })}
   <span class="flex gap-1">

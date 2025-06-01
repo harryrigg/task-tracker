@@ -23,6 +23,7 @@ export const projectSchema = z
 export type ProjectSchema = z.infer<typeof projectSchema>;
 
 export const currentTaskSchema = z.object({
+  description: z.string(),
   startedAt: timeSchema,
   projectId: z.number(),
 });

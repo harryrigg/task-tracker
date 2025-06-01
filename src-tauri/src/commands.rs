@@ -66,10 +66,11 @@ pub fn delete_project(app: State<'_, App>, id: i32) -> Result<()> {
 }
 
 #[tauri::command]
-pub fn start_task(app: State<'_, App>, project_id: i32) -> Result<()> {
+pub fn start_task(app: State<'_, App>, project_id: i32, description: String) -> Result<()> {
     let new_task = models::NewTask {
         started_at: chrono::Utc::now().naive_utc(),
         finished_at: None,
+        description: &description,
         project_id,
     };
 
@@ -126,6 +127,7 @@ pub fn update_task(
     app: State<'_, App>,
     id: i32,
     project_id: i32,
+    description: String,
     started_at: chrono::DateTime<chrono::Utc>,
     finished_at: Option<chrono::DateTime<chrono::Utc>>,
 ) -> Result<()> {
@@ -135,6 +137,7 @@ pub fn update_task(
         .filter(dsl::id.eq(id))
         .set((
             dsl::project_id.eq(project_id),
+            dsl::description.eq(description),
             dsl::started_at.eq(started_at.naive_utc()),
             dsl::finished_at.eq(finished_at.map(|v| v.naive_utc())),
         ))
