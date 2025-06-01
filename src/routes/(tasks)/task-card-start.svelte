@@ -52,6 +52,6 @@
     />
   </div>
   <Button size="icon" disabled={selectedProject === null} onclick={onStart}>
-    <PlayIcon />
+    <PlayIcon class="fill-white stroke-white" />
   </Button>
 </div>
