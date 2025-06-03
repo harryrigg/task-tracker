@@ -21,6 +21,7 @@
   let { project, onClose }: Props = $props();
 
   const initialData = {
+    _id: project.id,
     name: project.name,
     description: project.description,
   } satisfies ProjectSchema;

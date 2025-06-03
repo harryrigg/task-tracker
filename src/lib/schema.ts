@@ -9,11 +9,15 @@ const timeSchema = z.custom<Temporal.PlainTime>((val) => {
 
 export const projectSchema = z
   .object({
+    _id: z.number().optional(),
     name: z.string().min(3),
     description: z.string(),
   })
   .refine(
-    (data) => projects.projects.find((v) => v.name === data.name) === undefined,
+    (data) =>
+      projects.projects.find(
+        (v) => v.id !== data._id && v.name === data.name,
+      ) === undefined,
     {
       message: "Project name must be unique",
       path: ["name"],
