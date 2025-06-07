@@ -3,6 +3,8 @@ import z from "zod";
 
 import { projects } from "$lib/state/projects.svelte";
 
+import { roundTimeDown } from "./utils";
+
 const timeSchema = z.custom<Temporal.PlainTime>((val) => {
   return val instanceof Temporal.PlainTime;
 });
@@ -26,15 +28,27 @@ export const projectSchema = z
 
 export type ProjectSchema = z.infer<typeof projectSchema>;
 
-export const currentTaskSchema = z.object({
+const taskBaseSchema = z.object({
   description: z.string(),
   startedAt: timeSchema,
   projectId: z.number(),
 });
 
+export const currentTaskSchema = taskBaseSchema.refine(
+  (data) =>
+    Temporal.PlainTime.compare(
+      roundTimeDown(data.startedAt),
+      roundTimeDown(Temporal.Now.plainTimeISO()),
+    ) <= 0,
+  {
+    message: "Start date must be in the past",
+    path: ["startedAt"],
+  },
+);
+
 export type CurrentTaskSchema = z.infer<typeof currentTaskSchema>;
 
-export const taskSchema = currentTaskSchema
+export const taskSchema = taskBaseSchema
   .extend({
     finishedAt: timeSchema,
   })

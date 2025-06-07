@@ -9,6 +9,8 @@
   import type { Task } from "$lib/types";
   import { formatDuration, formatTime } from "$lib/utils";
 
+  import EditCurrentTaskPopover from "./edit-current-task-popover.svelte";
+
   type Props = {
     currentTask: Task;
   };
@@ -53,8 +55,11 @@
   <div class="flex items-center gap-3">
     {@render detail("Started At", formatTime(currentTask.startedAt))}
     {@render detail("Elapsed", formatDuration(timer))}
-    <Button size="icon" onclick={() => onStop()}>
-      <div class="size-3.5 rounded-xs bg-foreground"></div>
-    </Button>
+    <div class="flex items-center gap-1.5">
+      <EditCurrentTaskPopover task={currentTask} />
+      <Button size="icon" onclick={() => onStop()}>
+        <div class="size-3.5 rounded-xs bg-foreground"></div>
+      </Button>
+    </div>
   </div>
 </div>

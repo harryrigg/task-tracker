@@ -49,6 +49,10 @@ export function formatDuration(
   }
 }
 
+export function roundTimeDown(time: Temporal.PlainTime): Temporal.PlainTime {
+  return time.round({ smallestUnit: "minute", roundingMode: "floor" });
+}
+
 export const IntlDateConvert = {
   timeToTemporal(time: IntlTime): Temporal.PlainTime {
     return Temporal.PlainTime.from(time);

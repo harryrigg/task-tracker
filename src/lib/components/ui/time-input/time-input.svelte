@@ -1,16 +1,19 @@
 <script lang="ts">
   import type { Time as IntlTime } from "@internationalized/date";
-  import type { Temporal } from "@js-temporal/polyfill";
+  import { Temporal } from "@js-temporal/polyfill";
+  import { Clock3Icon } from "@lucide/svelte";
   import { TimeField } from "bits-ui";
 
+  import { Button } from "$lib/components/ui/button";
   import { LABEL_CLASSNAME } from "$lib/components/ui/label/label.svelte";
 
-  import { IntlDateConvert, cn } from "$lib/utils";
+  import { IntlDateConvert, cn, roundTimeDown } from "$lib/utils";
 
   type Props = {
     name: string;
     label: string;
     value: Temporal.PlainTime;
+    enableSetNow?: boolean;
     "aria-invalid": "true" | undefined;
   };
 
@@ -18,6 +21,7 @@
     name,
     label,
     value = $bindable(),
+    enableSetNow = false,
     "aria-invalid": invalid,
   }: Props = $props();
 
@@ -26,7 +30,7 @@
   }
 
   function setValue(newValue: IntlTime) {
-    value = IntlDateConvert.timeToTemporal(newValue);
+    value = roundTimeDown(IntlDateConvert.timeToTemporal(newValue));
   }
 </script>
 
@@ -61,6 +65,17 @@
             {/if}
           </div>
         {/each}
+        {#if enableSetNow}
+          <Button
+            variant="ghost"
+            size="none"
+            onclick={() => (value = roundTimeDown(Temporal.Now.plainTimeISO()))}
+            class="ml-auto cursor-pointer gap-1 px-0.5 text-xs text-foreground/50"
+          >
+            <Clock3Icon class="size-3" />
+            Now
+          </Button>
+        {/if}
       {/snippet}
     </TimeField.Input>
   </div>
