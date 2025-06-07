@@ -83,45 +83,33 @@
     </Dialog.Header>
     <form use:enhance id={formId}>
       <Form.Container>
-        <Form.Field {form} name="description">
-          <Form.Control>
-            {#snippet children({ props })}
-              <Form.Label>Description</Form.Label>
-              <Input
-                {...props}
-                bind:value={$formData.description}
-                class="w-[280px]"
-              />
-            {/snippet}
-          </Form.Control>
-          <Form.FieldErrors />
-        </Form.Field>
+        <div class="grid grid-cols-2 gap-2">
+          <Form.Field {form} name="startedAt">
+            <Form.Control>
+              {#snippet children({ props })}
+                <TimeInput
+                  {...props}
+                  label="Started At"
+                  bind:value={$formData.startedAt}
+                />
+              {/snippet}
+            </Form.Control>
+            <Form.FieldErrors />
+          </Form.Field>
 
-        <Form.Field {form} name="startedAt">
-          <Form.Control>
-            {#snippet children({ props })}
-              <TimeInput
-                {...props}
-                label="Started At"
-                bind:value={$formData.startedAt}
-              />
-            {/snippet}
-          </Form.Control>
-          <Form.FieldErrors />
-        </Form.Field>
-
-        <Form.Field {form} name="finishedAt">
-          <Form.Control>
-            {#snippet children({ props })}
-              <TimeInput
-                {...props}
-                label="Finished At"
-                bind:value={$formData.finishedAt}
-              />
-            {/snippet}
-          </Form.Control>
-          <Form.FieldErrors />
-        </Form.Field>
+          <Form.Field {form} name="finishedAt">
+            <Form.Control>
+              {#snippet children({ props })}
+                <TimeInput
+                  {...props}
+                  label="Finished At"
+                  bind:value={$formData.finishedAt}
+                />
+              {/snippet}
+            </Form.Control>
+            <Form.FieldErrors />
+          </Form.Field>
+        </div>
 
         <Form.Field {form} name="projectId">
           <Form.Control>
@@ -142,7 +130,7 @@
                   <Button
                     variant="outline"
                     {...props}
-                    class="w-[280px] justify-between border-input bg-input"
+                    class="w-full justify-between border-input bg-input"
                   >
                     {project?.name || "Select a project..."}
                     <ChevronsUpDownIcon
@@ -151,6 +139,16 @@
                   </Button>
                 {/snippet}
               </ProjectChooser>
+            {/snippet}
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+
+        <Form.Field {form} name="description">
+          <Form.Control>
+            {#snippet children({ props })}
+              <Form.Label>Description</Form.Label>
+              <Input {...props} bind:value={$formData.description} />
             {/snippet}
           </Form.Control>
           <Form.FieldErrors />
