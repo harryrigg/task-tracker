@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { PencilIcon } from "@lucide/svelte";
+  import { ChevronsUpDownIcon, PencilIcon } from "@lucide/svelte";
   import toast from "svelte-french-toast";
   import { superForm } from "sveltekit-superforms";
   import { zod } from "sveltekit-superforms/adapters";
 
+  import ProjectChooser from "$lib/components/project-chooser.svelte";
   import { Button } from "$lib/components/ui/button";
   import * as Form from "$lib/components/ui/form";
   import { Input } from "$lib/components/ui/input";
@@ -11,6 +12,7 @@
   import { TimeInput } from "$lib/components/ui/time-input";
 
   import { type CurrentTaskSchema, currentTaskSchema } from "$lib/schema";
+  import { projects } from "$lib/state/projects.svelte";
   import { tasks } from "$lib/state/tasks.svelte";
   import type { Task } from "$lib/types";
 
@@ -64,6 +66,10 @@
       form.reset();
     }
   }
+
+  const project = $derived(
+    projects.projects.find((v) => v.id === $formData.projectId),
+  );
 </script>
 
 <Popover.Root bind:open={getOpen, setOpen}>
@@ -81,6 +87,39 @@
   >
     <form use:enhance class="flex flex-col gap-2">
       <Form.Container>
+        <Form.Field {form} name="projectId">
+          <Form.Control>
+            {#snippet children()}
+              <Form.Label>Project</Form.Label>
+              <ProjectChooser
+                bind:value={
+                  () => project || null,
+                  (v) => {
+                    if (v !== null) {
+                      $formData.projectId = v.id;
+                    }
+                  }
+                }
+                allowCreate={false}
+              >
+                {#snippet child({ props })}
+                  <Button
+                    variant="outline"
+                    {...props}
+                    class="w-full justify-between border-input bg-input"
+                  >
+                    {project?.name || "Select a project..."}
+                    <ChevronsUpDownIcon
+                      class="ml-2 size-4 shrink-0 opacity-50"
+                    />
+                  </Button>
+                {/snippet}
+              </ProjectChooser>
+            {/snippet}
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+
         <Form.Field {form} name="description">
           <Form.Control>
             {#snippet children({ props })}
